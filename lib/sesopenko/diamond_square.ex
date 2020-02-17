@@ -1,26 +1,38 @@
 defmodule Sesopenko.DiamondSquare do
   @moduledoc """
-  Documentation for DiamondSquare.
+  Generates a fractal map grid using the Diamond Square Algorithm.
+
+  ```elixir
+  # Initialize an instance
+  my_diamond_square = Sesopenko.DiamondSquare.init(n)
+  # advance:
+  Sesopenko.DiamondSquare.perform_step(my_diamond_square)
+  ```
   """
   alias Sesopenko.DiamondSquare.LowLevel
   defstruct grid: %{}, n: nil, i: nil, next_step: nil, size: 0
 
-  def step_to_end(diamond_square) do
-    n = diamond_square.n
-    i = diamond_square.i
-    step_to_end(n, i, perform_step(diamond_square))
+  @doc """
+  Initializes a DiamondSquare with starting values for a given n.
+
+  Returns `{:ok, %Sesopenko.DiamondSquare}
+  """
+  def init(n) when n > 1 do
+    {
+      :ok,
+      %Sesopenko.DiamondSquare{
+        grid: LowLevel.initialize_grid(n),
+        n: n,
+        i: 0,
+        next_step: :diamond,
+        size: LowLevel.calc_size(n)
+      }
+    }
   end
 
-  def step_to_end(n, i, diamond_square) when i < n do
-    n = diamond_square.n
-    i = diamond_square.i
-    step_to_end(n, i, perform_step(diamond_square))
-  end
-
-  def step_to_end(_, _, diamond_square) do
-    diamond_square
-  end
-
+  @doc """
+  Advances a given diamond square.
+  """
   def perform_step(diamond_square) do
     current_i = diamond_square.i
     next_step = diamond_square.next_step
@@ -41,7 +53,7 @@ defmodule Sesopenko.DiamondSquare do
     end
   end
 
-  def apply_diamond(n, i, grid) do
+  defp apply_diamond(n, i, grid) do
     new_grid =
       Enum.reduce(LowLevel.gen_diamond_points(n, i), grid, fn point, current_grid ->
         feeding_points = LowLevel.get_feeding_points_for_diamond(n, i, point)
@@ -52,7 +64,7 @@ defmodule Sesopenko.DiamondSquare do
     new_grid
   end
 
-  def apply_square(n, i, grid) do
+  defp apply_square(n, i, grid) do
     square_points = LowLevel.gen_square_points(n, i)
 
     new_grid =
