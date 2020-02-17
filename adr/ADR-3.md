@@ -2,6 +2,18 @@
 
 The low level functions of the DiamondSquare module are confusing the interface. The tests are quite cluttered and it would take a lot of work to document all of the low level functions for public usage. Exposing them can result in misuse & unexpected results.
 
+### Example usage:
+
+```elixir
+# wikipedia example of n = 2
+# https://en.wikipedia.org/wiki/Diamond-square_algorithm
+n = 2
+diamond_square = Sesopenko.DiamondSquare.new(n)
+finished = Sesopenko.DiamondSquare.step_to_end(diamond_square)
+grid = finished.grid
+IO.inspect(grid, label: "finished grid")
+```
+
 ## Decision
 
 We will move the low level functionality which is not pertinant to creating a DiamondSquare structure and stepping through it into a submodule and exclude it from hexdocs.
