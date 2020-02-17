@@ -6,7 +6,7 @@ defmodule Sesopenko.DiamondSquare do
   # Initialize an instance
   my_diamond_square = Sesopenko.DiamondSquare.init(n)
   # advance:
-  Sesopenko.DiamondSquare.perform_step(my_diamond_square)
+  {:ok, new_state} = Sesopenko.DiamondSquare.perform_step(my_diamond_square)
   ```
   """
   alias Sesopenko.DiamondSquare.LowLevel
@@ -15,6 +15,9 @@ defmodule Sesopenko.DiamondSquare do
 
   @doc """
   Initializes a DiamondSquare with starting values for a given n.
+
+  Helper method for getting a fresh diamond square.  The corners will
+  be initialized with random values.
 
   Returns `{:ok, %Sesopenko.DiamondSquare}
   """
@@ -29,7 +32,9 @@ defmodule Sesopenko.DiamondSquare do
   end
 
   @doc """
-  Advances a given diamond square.
+  Advances a given diamond square, adding points if it's not already done.
+
+  returns {:ok, %DiamondSquare{}}
   """
   def perform_step(%DiamondSquare{} = diamond_square) do
     current_i = diamond_square.i

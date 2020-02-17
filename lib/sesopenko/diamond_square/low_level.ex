@@ -1,4 +1,5 @@
 defmodule Sesopenko.DiamondSquare.LowLevel do
+  @moduledoc false
   def calc_size(n) do
     round(:math.pow(2, n)) + 1
   end
