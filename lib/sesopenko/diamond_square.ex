@@ -1,9 +1,9 @@
 defmodule Sesopenko.DiamondSquare do
-  defstruct grid: %{}, n: nil, i: nil, next_step: nil, size: 0
-
   @moduledoc """
   Documentation for DiamondSquare.
   """
+  alias Sesopenko.DiamondSquare.LowLevel
+  defstruct grid: %{}, n: nil, i: nil, next_step: nil, size: 0
 
   def step_to_end(diamond_square) do
     n = diamond_square.n
@@ -70,7 +70,7 @@ defmodule Sesopenko.DiamondSquare do
     midpoint_translation = div(section_scalar, 2)
     midpoint_translation_wrap = midpoint_translation + 1
 
-    size = calc_size(n)
+    size = LowLevel.calc_size(n)
     max = size - 1
     min = 0
 
@@ -173,7 +173,7 @@ defmodule Sesopenko.DiamondSquare do
 
   def initialize_grid(n) do
     grid = %{}
-    size = calc_size(n)
+    size = LowLevel.calc_size(n)
     end_index = size - 1
 
     corners = [
@@ -199,10 +199,6 @@ defmodule Sesopenko.DiamondSquare do
     ratio = i / n
     range = round((1.0 - ratio) * max_scale)
     :rand.uniform(range) - div(round(range), 2)
-  end
-
-  def calc_size(n) do
-    round(:math.pow(2, n)) + 1
   end
 
   def wrap_i(value, max) when value >= 0 and value <= max - 1 do
