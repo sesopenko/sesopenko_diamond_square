@@ -96,7 +96,7 @@ defmodule Sesopenko.DiamondSquare do
   def get_feeding_points_for_diamond(n, iteration, {target_x, target_y}) do
     # there should be 4 points
 
-    section_scalar = get_scalar(n, iteration)
+    section_scalar = LowLevel.get_scalar(n, iteration)
     midpoint_translation = div(section_scalar, 2)
 
     translation_vectors = [
@@ -129,7 +129,7 @@ defmodule Sesopenko.DiamondSquare do
     num_points = round(:math.pow(2, iteration))
     last_point_in_span = num_points - 1
 
-    scalar = get_scalar(n, iteration)
+    scalar = LowLevel.get_scalar(n, iteration)
     midpoint_translation = div(scalar, 2)
 
     Enum.map(0..last_point_in_span, fn i -> i * scalar + midpoint_translation end)
@@ -141,7 +141,7 @@ defmodule Sesopenko.DiamondSquare do
   def gen_square_points(n, i) when n > 1 and i < n and i >= 0 do
     num_rows = round(:math.pow(2, i + 1)) + 1
     end_row = num_rows - 1
-    scalar = div(get_scalar(n, i), 2)
+    scalar = div(LowLevel.get_scalar(n, i), 2)
 
     Enum.flat_map(0..end_row, fn row_i ->
       min_qty = round(:math.pow(2, i))
@@ -156,10 +156,6 @@ defmodule Sesopenko.DiamondSquare do
         point
       end)
     end)
-  end
-
-  defp get_scalar(n, iteration) do
-    round(:math.pow(2, n - iteration))
   end
 
   def gen_noise(n, i, max_scale \\ 128.0) do

@@ -52,4 +52,8 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
 
     sum / length(points)
   end
+
+  def get_scalar(n, iteration) do
+    round(:math.pow(2, n - iteration))
+  end
 end
