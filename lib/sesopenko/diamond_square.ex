@@ -57,39 +57,11 @@ defmodule Sesopenko.DiamondSquare do
 
     new_grid =
       Enum.reduce(square_points, grid, fn point, current_grid ->
-        feeding_points = get_feeding_points_for_square(n, i, point)
+        feeding_points = LowLevel.get_feeding_points_for_square(n, i, point)
         average = LowLevel.average_points(current_grid, feeding_points) + LowLevel.gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
 
     new_grid
-  end
-
-  def get_feeding_points_for_square(n, iteration, {x, y}) do
-    section_scalar = round(:math.pow(2, n - iteration))
-    midpoint_translation = div(section_scalar, 2)
-    midpoint_translation_wrap = midpoint_translation + 1
-
-    size = LowLevel.calc_size(n)
-    max = size - 1
-    min = 0
-
-    translation_vectors = [
-      # upwards
-      {0, if(y == min, do: -midpoint_translation_wrap, else: -midpoint_translation)},
-      # left
-      {if(x == min, do: -midpoint_translation_wrap, else: -midpoint_translation), 0},
-      # right
-      {if(x == max, do: midpoint_translation_wrap, else: midpoint_translation), 0},
-      # downards
-      {0, if(y == max, do: midpoint_translation_wrap, else: midpoint_translation)}
-    ]
-
-    Enum.map(translation_vectors, fn {trans_x, trans_y} ->
-      before_wrap = {trans_x + x, trans_y + y}
-      {before_x, before_y} = before_wrap
-      after_wrap = {LowLevel.wrap_i(before_x, size), LowLevel.wrap_i(before_y, size)}
-      after_wrap
-    end)
   end
 end

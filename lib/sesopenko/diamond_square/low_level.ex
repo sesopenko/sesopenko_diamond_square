@@ -75,6 +75,34 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
     end)
   end
 
+  def get_feeding_points_for_square(n, iteration, {x, y}) do
+    section_scalar = round(:math.pow(2, n - iteration))
+    midpoint_translation = div(section_scalar, 2)
+    midpoint_translation_wrap = midpoint_translation + 1
+
+    size = calc_size(n)
+    max = size - 1
+    min = 0
+
+    translation_vectors = [
+      # upwards
+      {0, if(y == min, do: -midpoint_translation_wrap, else: -midpoint_translation)},
+      # left
+      {if(x == min, do: -midpoint_translation_wrap, else: -midpoint_translation), 0},
+      # right
+      {if(x == max, do: midpoint_translation_wrap, else: midpoint_translation), 0},
+      # downards
+      {0, if(y == max, do: midpoint_translation_wrap, else: midpoint_translation)}
+    ]
+
+    Enum.map(translation_vectors, fn {trans_x, trans_y} ->
+      before_wrap = {trans_x + x, trans_y + y}
+      {before_x, before_y} = before_wrap
+      after_wrap = {wrap_i(before_x, size), wrap_i(before_y, size)}
+      after_wrap
+    end)
+  end
+
   @doc """
   Generates a full list of diamond points, spanning a 2 dimensional axis
   """
