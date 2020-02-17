@@ -70,7 +70,7 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
       {midpoint_translation, midpoint_translation}
     ]
 
-    Enum.map(translation_vectors, fn {translation_x, translation_y} ->
+    Stream.map(translation_vectors, fn {translation_x, translation_y} ->
       {translation_x + target_x, translation_y + target_y}
     end)
   end

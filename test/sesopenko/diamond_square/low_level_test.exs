@@ -4,6 +4,7 @@ defmodule Sesopenko.DiamondSquare.LowLevelTest do
   """
   alias Sesopenko.DiamondSquare.LowLevel
   use ExUnit.Case
+  use ExUnit.Case, async: true
 
   describe "wrap_i" do
     wrap_i_scenarios = [
@@ -263,8 +264,6 @@ defmodule Sesopenko.DiamondSquare.LowLevelTest do
             context[:iteration],
             context[:mid_point]
           )
-
-        assert length(result) == 4
 
         for expected <- context[:expected_points] do
           assert Enum.member?(result, expected), "Should find expected point"
