@@ -30,7 +30,7 @@ end
 
 ## Documentation
 
-Documentation can be found at [https://hexdocs.pm/sesopenko_diamond_square/](https://hexdocs.pm/sesopenko_diamond_square/l).
+Documentation can be found at [https://hexdocs.pm/sesopenko_diamond_square/api-reference.html](https://hexdocs.pm/sesopenko_diamond_square/api-reference.html).
 
 ## Example Usage
 
