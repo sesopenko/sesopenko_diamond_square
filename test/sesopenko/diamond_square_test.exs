@@ -7,43 +7,6 @@ defmodule Sesopenko.DiamondSquareTest do
   use ExUnit.Case
   use ExUnit.Case, async: true
 
-  describe "average_points" do
-    scenarios = [
-      %{
-        :label => "one point",
-        :grid => %{
-          {0, 0} => 5
-        },
-        :points => [
-          {0, 0}
-        ],
-        :expected_result => 5
-      },
-      %{
-        :label => "two points",
-        :grid => %{
-          {0, 0} => 10,
-          {1, 1} => 20
-        },
-        :points => [
-          {0, 0},
-          {1, 1}
-        ],
-        :expected_result => 15
-      }
-    ]
-
-    for scenario <- scenarios do
-      @tag grid: scenario[:grid]
-      @tag points: scenario[:points]
-      @tag expected_result: scenario[:expected_result]
-      test scenario[:label], context do
-        average_result = DiamondSquare.average_points(context[:grid], context[:points])
-        assert context[:expected_result] == average_result, "expected == average"
-      end
-    end
-  end
-
   describe "gen_diamond_span_list" do
     # We can use a list of positions a 1 dimensional axis for both x and y
     # and the list can be generated for a given n and iteration.

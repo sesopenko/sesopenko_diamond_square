@@ -45,7 +45,7 @@ defmodule Sesopenko.DiamondSquare do
     new_grid =
       Enum.reduce(gen_diamond_points(n, i), grid, fn point, current_grid ->
         feeding_points = get_feeding_points_for_diamond(n, i, point)
-        average = average_points(grid, feeding_points) + gen_noise(n, i)
+        average = LowLevel.average_points(grid, feeding_points) + gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
 
@@ -58,7 +58,7 @@ defmodule Sesopenko.DiamondSquare do
     new_grid =
       Enum.reduce(square_points, grid, fn point, current_grid ->
         feeding_points = get_feeding_points_for_square(n, i, point)
-        average = average_points(current_grid, feeding_points) + gen_noise(n, i)
+        average = LowLevel.average_points(current_grid, feeding_points) + gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
 
@@ -160,15 +160,6 @@ defmodule Sesopenko.DiamondSquare do
 
   defp get_scalar(n, iteration) do
     round(:math.pow(2, n - iteration))
-  end
-
-  def average_points(grid, points) when length(points) > 0 do
-    sum =
-      Enum.reduce(points, 0, fn {x, y}, acc ->
-        acc + grid[{x, y}]
-      end)
-
-    sum / length(points)
   end
 
   def gen_noise(n, i, max_scale \\ 128.0) do

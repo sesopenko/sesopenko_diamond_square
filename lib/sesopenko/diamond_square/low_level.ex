@@ -43,4 +43,13 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
   def wrap_i(value, max) do
     rem(value, max)
   end
+
+  def average_points(grid, points) when length(points) > 0 do
+    sum =
+      Enum.reduce(points, 0, fn {x, y}, acc ->
+        acc + grid[{x, y}]
+      end)
+
+    sum / length(points)
+  end
 end
