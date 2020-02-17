@@ -43,7 +43,7 @@ defmodule Sesopenko.DiamondSquare do
 
   def apply_diamond(n, i, grid) do
     new_grid =
-      Enum.reduce(gen_diamond_points(n, i), grid, fn point, current_grid ->
+      Enum.reduce(LowLevel.gen_diamond_points(n, i), grid, fn point, current_grid ->
         feeding_points = LowLevel.get_feeding_points_for_diamond(n, i, point)
         average = LowLevel.average_points(grid, feeding_points) + LowLevel.gen_noise(n, i)
         Map.put(current_grid, point, average)
@@ -91,29 +91,5 @@ defmodule Sesopenko.DiamondSquare do
       after_wrap = {LowLevel.wrap_i(before_x, size), LowLevel.wrap_i(before_y, size)}
       after_wrap
     end)
-  end
-
-  @doc """
-  Generates a full list of diamond points, spanning a 2 dimensional axis
-  """
-  def gen_diamond_points(n, i) do
-    Enum.flat_map(gen_diamond_span_list(n, i), fn y ->
-      Enum.map(gen_diamond_span_list(n, i), fn x ->
-        {x, y}
-      end)
-    end)
-  end
-
-  @doc """
-  Generates a list of diamond points spanning a 1 dimensional axis
-  """
-  def gen_diamond_span_list(n, iteration) when n > 1 and iteration < n and iteration >= 0 do
-    num_points = round(:math.pow(2, iteration))
-    last_point_in_span = num_points - 1
-
-    scalar = LowLevel.get_scalar(n, iteration)
-    midpoint_translation = div(scalar, 2)
-
-    Enum.map(0..last_point_in_span, fn i -> i * scalar + midpoint_translation end)
   end
 end

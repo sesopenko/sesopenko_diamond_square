@@ -76,6 +76,17 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
   end
 
   @doc """
+  Generates a full list of diamond points, spanning a 2 dimensional axis
+  """
+  def gen_diamond_points(n, i) do
+    Enum.flat_map(gen_diamond_span_list(n, i), fn y ->
+      Enum.map(gen_diamond_span_list(n, i), fn x ->
+        {x, y}
+      end)
+    end)
+  end
+
+  @doc """
   Generates a full list of square points spanning a 2 dimensional axis
   """
   def gen_square_points(n, i) when n > 1 and i < n and i >= 0 do
@@ -96,6 +107,19 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
         point
       end)
     end)
+  end
+
+  @doc """
+  Generates a list of diamond points spanning a 1 dimensional axis
+  """
+  def gen_diamond_span_list(n, iteration) when n > 1 and iteration < n and iteration >= 0 do
+    num_points = round(:math.pow(2, iteration))
+    last_point_in_span = num_points - 1
+
+    scalar = get_scalar(n, iteration)
+    midpoint_translation = div(scalar, 2)
+
+    Enum.map(0..last_point_in_span, fn i -> i * scalar + midpoint_translation end)
   end
 
   def gen_noise(n, i, max_scale \\ 128.0) do
