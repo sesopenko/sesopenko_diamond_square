@@ -26,4 +26,21 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
   defp set_corners(grid, _) do
     grid
   end
+
+  def wrap_i(value, max) when value >= 0 and value <= max - 1 do
+    value
+  end
+
+  def wrap_i(value, max) when value < 0 and value < -max do
+    # clean it up so that it's not as large of a negative scaler
+    wrap_i(rem(value, max), max)
+  end
+
+  def wrap_i(value, max) when value < 0 and value >= -max do
+    max + value
+  end
+
+  def wrap_i(value, max) do
+    rem(value, max)
+  end
 end

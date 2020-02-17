@@ -5,6 +5,63 @@ defmodule Sesopenko.DiamondSquare.LowLevelTest do
   alias Sesopenko.DiamondSquare.LowLevel
   use ExUnit.Case
 
+  describe "wrap_i" do
+    wrap_i_scenarios = [
+      %{
+        :label => "zero",
+        :input_value => 0,
+        :input_ceiling => 5,
+        :expected => 0
+      },
+      %{
+        :label => "non zero, positive, within bounds",
+        :input_value => 2,
+        :input_ceiling => 5,
+        :expected => 2
+      },
+      %{
+        :label => "non zero, positive, equal to ceiling",
+        :input_value => 5,
+        :input_ceiling => 5,
+        :expected => 0
+      },
+      %{
+        :label => "non zero, positive, out of bounds",
+        :input_value => 6,
+        :input_ceiling => 5,
+        :expected => 1
+      },
+      %{
+        :label => "negative, within bounds in negative direction",
+        :input_value => -1,
+        :input_ceiling => 5,
+        :expected => 4
+      },
+      %{
+        :label => "negative, equal to ceiling in negative direction",
+        :input_value => -5,
+        :input_ceiling => 5,
+        :expected => 0
+      },
+      %{
+        :label => "negative, out of bounds in negative direction",
+        :input_value => -6,
+        :input_ceiling => 5,
+        :expected => 4
+      }
+    ]
+
+    for scenario <- wrap_i_scenarios do
+      @tag input_value: scenario[:input_value]
+      @tag input_ceiling: scenario[:input_ceiling]
+      @tag expected: scenario[:expected]
+      test "wrap_i scenario: #{scenario[:label]}", context do
+        result = LowLevel.wrap_i(context[:input_value], context[:input_ceiling])
+        assert result == context[:expected]
+      end
+    end
+  end
+
   describe "initailize_grid" do
     scenarios = [
       %{

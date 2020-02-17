@@ -88,7 +88,7 @@ defmodule Sesopenko.DiamondSquare do
     Enum.map(translation_vectors, fn {trans_x, trans_y} ->
       before_wrap = {trans_x + x, trans_y + y}
       {before_x, before_y} = before_wrap
-      after_wrap = {wrap_i(before_x, size), wrap_i(before_y, size)}
+      after_wrap = {LowLevel.wrap_i(before_x, size), LowLevel.wrap_i(before_y, size)}
       after_wrap
     end)
   end
@@ -175,22 +175,5 @@ defmodule Sesopenko.DiamondSquare do
     ratio = i / n
     range = round((1.0 - ratio) * max_scale)
     :rand.uniform(range) - div(round(range), 2)
-  end
-
-  def wrap_i(value, max) when value >= 0 and value <= max - 1 do
-    value
-  end
-
-  def wrap_i(value, max) when value < 0 and value < -max do
-    # clean it up so that it's not as large of a negative scaler
-    wrap_i(rem(value, max), max)
-  end
-
-  def wrap_i(value, max) when value < 0 and value >= -max do
-    max + value
-  end
-
-  def wrap_i(value, max) do
-    rem(value, max)
   end
 end
