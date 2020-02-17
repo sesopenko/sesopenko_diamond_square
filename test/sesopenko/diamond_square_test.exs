@@ -136,6 +136,143 @@ defmodule Sesopenko.DiamondSquareTest do
           {2, 4},
           {4, 4}
         ]
+      },
+      %{
+        label: "n(2), step 4 (final), last of square points",
+        input_diamond_square: %DiamondSquare{
+          n: 2,
+          i: 1,
+          next_step: :square,
+          size: 5,
+          grid: %{
+            # top row points
+            {0, 0} => 20,
+            {2, 0} => 20,
+            {4, 0} => 20,
+            # 2nd row, diamonds
+            {1, 1} => 20,
+            {3, 1} => 20,
+            # middle row points
+            {0, 2} => 20,
+            {2, 2} => 20,
+            {4, 2} => 20,
+            # 3rd row, diamonds
+            {1, 3} => 20,
+            {3, 3} => 20,
+            # bottom row points
+            {0, 4} => 20,
+            {2, 4} => 20,
+            {4, 4} => 20
+          }
+        },
+        expected_next_step: :done,
+        expected_i: 2,
+        expected_grid_points: [
+          # top row points
+          {0, 0},
+          {1, 0},
+          {2, 0},
+          {3, 0},
+          {4, 0},
+          # 2nd row
+          {0, 1},
+          {1, 1},
+          {2, 1},
+          {3, 1},
+          {4, 1},
+          # middle row points
+          {0, 2},
+          {1, 2},
+          {2, 2},
+          {3, 2},
+          {4, 2},
+          # 3rd row
+          {0, 3},
+          {1, 3},
+          {2, 3},
+          {3, 3},
+          {4, 3},
+          # bottom row points
+          {0, 4},
+          {1, 4},
+          {2, 4},
+          {3, 4},
+          {4, 4}
+        ]
+      },
+      %{
+        label: "n(2), already complete, trying to step further",
+        input_diamond_square: %DiamondSquare{
+          n: 2,
+          i: 2,
+          next_step: :done,
+          size: 5,
+          grid: %{
+            {0, 0} => 20,
+            {1, 0} => 20,
+            {2, 0} => 20,
+            {3, 0} => 20,
+            {4, 0} => 20,
+            # 2nd row
+            {0, 1} => 20,
+            {1, 1} => 20,
+            {2, 1} => 20,
+            {3, 1} => 20,
+            {4, 1} => 20,
+            # middle row points
+            {0, 2} => 20,
+            {1, 2} => 20,
+            {2, 2} => 20,
+            {3, 2} => 20,
+            {4, 2} => 20,
+            # 3rd row
+            {0, 3} => 20,
+            {1, 3} => 20,
+            {2, 3} => 20,
+            {3, 3} => 20,
+            {4, 3} => 20,
+            # bottom row points
+            {0, 4} => 20,
+            {1, 4} => 20,
+            {2, 4} => 20,
+            {3, 4} => 20,
+            {4, 4} => 20
+          }
+        },
+        expected_next_step: :done,
+        expected_i: 2,
+        expected_grid_points: [
+          # top row points
+          {0, 0},
+          {1, 0},
+          {2, 0},
+          {3, 0},
+          {4, 0},
+          # 2nd row
+          {0, 1},
+          {1, 1},
+          {2, 1},
+          {3, 1},
+          {4, 1},
+          # middle row points
+          {0, 2},
+          {1, 2},
+          {2, 2},
+          {3, 2},
+          {4, 2},
+          # 3rd row
+          {0, 3},
+          {1, 3},
+          {2, 3},
+          {3, 3},
+          {4, 3},
+          # bottom row points
+          {0, 4},
+          {1, 4},
+          {2, 4},
+          {3, 4},
+          {4, 4}
+        ]
       }
     ]
 

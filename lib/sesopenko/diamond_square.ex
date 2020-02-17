@@ -37,25 +37,38 @@ defmodule Sesopenko.DiamondSquare do
     grid = diamond_square.grid
     n = diamond_square.n
 
-    if next_step == :diamond do
-      # diamond step
-      update = Map.put(diamond_square, :next_step, :square)
+    cond do
+      next_step == :done ->
+        {:ok, diamond_square}
 
-      {
-        :ok,
-        Map.put(update, :grid, apply_diamond(n, current_i, grid))
-      }
-    else
-      # square step
-      # increment
-      next_step_set = Map.put(diamond_square, :next_step, :diamond)
-      i_incremented = Map.put(next_step_set, :i, current_i + 1)
-      new_grid = apply_square(n, current_i, grid)
+      next_step == :diamond ->
+        {
+          :ok,
+          Map.put(diamond_square, :next_step, :square)
+          |> Map.put(:grid, apply_diamond(n, current_i, grid))
+        }
 
-      {
-        :ok,
-        Map.put(i_incremented, :grid, new_grid)
-      }
+      next_step == :square ->
+        {
+          :ok,
+          Map.put(
+            diamond_square,
+            :next_step,
+            get_next_step_after_square_performed(diamond_square)
+          )
+          |> Map.put(:i, current_i + 1)
+          |> Map.put(:grid, apply_square(n, current_i, grid))
+        }
+    end
+  end
+
+  defp get_next_step_after_square_performed(diamond_square) do
+    advanced_iteration = diamond_square.i + 1
+    n = diamond_square.n
+
+    cond do
+      advanced_iteration < n -> :diamond
+      advanced_iteration == n -> :done
     end
   end
 
