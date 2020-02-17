@@ -1,24 +1,56 @@
 # Sesopenko
 
-**TODO: Add description**
+Generates a plasma fractal grid of points using the [Diamond Square algorithm](https://en.wikipedia.org/wiki/Diamond-square_algorithm).
+
+From [Wikipedia](https://en.wikipedia.org/wiki/Diamond-square_algorithm):
+
+> The diamond-square algorithm is a method for generating [heightmaps](https://en.wikipedia.org/wiki/Heightmap) for computer graphics. It is a slightly better algorithm than the three-dimensional implementation of the midpoint displacement algorithm which produces two-dimensional landscapes. It is also known as the random midpoint displacement fractal, the cloud fractal or the plasma fractal, because of the plasma effect produced when applied.
+
+
+Starting with 4 corner points of random values, the algorithm fills in the grid, recursively, filling in detail iteratively.  Each step references points from the previous step, adding a small amount of noise, reducing the noise at each iteration.
+
+This results in a grid height-map which resembles mountainous terrain.
+
+![Example output image of diamond square algorithm](documentation/PlasmafractalExample.gif?raw=true "Example output image of diamond square algorithm")
+
+The grid is defined using an `n` iteration value and the size of the grid equals `2^n + 1`.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+If [available in Hex](https://hex.pm/packages/sesopenko_diamond_square), the package can be installed
 by adding `sesopenko_diamond_square` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:sesopenko_diamond_square, "~> 0.1.0"}
+    {:sesopenko_diamond_square, "~> 1.0.0"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/sesopenko_diamond_square](https://hexdocs.pm/sesopenko_diamond_square).
+## Documentation
 
+Documentation can be found at [https://hexdocs.pm/sesopenko_diamond_square/](https://hexdocs.pm/sesopenko_diamond_square/l).
+
+## Example Usage
+
+Example of manually stepping through the algorithm:
+
+```elixir
+my_diamond_square = Sesopenko.DiamondSquare.init(n)
+{:ok, new_state} = Sesopenko.DiamondSquare.perform_step(my_diamond_square)
+IO.puts(new_state.grid)
+IO.puts(new_state.size)
+```
+
+Example of stepping to the end:
+
+```elixir
+my_diamond_square = Sesopenko.DiamondSquare.init(n)
+complete = Sesopenko.DiamondSquare.step_to_end(my_diamond_square)
+IO.puts(new_state.grid)
+IO.puts(new_state.size)
+```
 
 ## License
 
