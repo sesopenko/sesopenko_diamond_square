@@ -10,6 +10,7 @@ defmodule Sesopenko.DiamondSquare do
   ```
   """
   alias Sesopenko.DiamondSquare.LowLevel
+  alias Sesopenko.DiamondSquare
   defstruct grid: %{}, n: nil, i: nil, next_step: nil, size: 0
 
   @doc """
@@ -18,22 +19,19 @@ defmodule Sesopenko.DiamondSquare do
   Returns `{:ok, %Sesopenko.DiamondSquare}
   """
   def init(n) when n > 1 do
-    {
-      :ok,
-      %Sesopenko.DiamondSquare{
-        grid: LowLevel.initialize_grid(n),
-        n: n,
-        i: 0,
-        next_step: :diamond,
-        size: LowLevel.calc_size(n)
-      }
+    %DiamondSquare{
+      grid: LowLevel.initialize_grid(n),
+      n: n,
+      i: 0,
+      next_step: :diamond,
+      size: LowLevel.calc_size(n)
     }
   end
 
   @doc """
   Advances a given diamond square.
   """
-  def perform_step(diamond_square) do
+  def perform_step(%DiamondSquare{} = diamond_square) do
     current_i = diamond_square.i
     next_step = diamond_square.next_step
     grid = diamond_square.grid
@@ -42,14 +40,22 @@ defmodule Sesopenko.DiamondSquare do
     if next_step == :diamond do
       # diamond step
       update = Map.put(diamond_square, :next_step, :square)
-      Map.put(update, :grid, apply_diamond(n, current_i, grid))
+
+      {
+        :ok,
+        Map.put(update, :grid, apply_diamond(n, current_i, grid))
+      }
     else
       # square step
       # increment
       next_step_set = Map.put(diamond_square, :next_step, :diamond)
       i_incremented = Map.put(next_step_set, :i, current_i + 1)
       new_grid = apply_square(n, current_i, grid)
-      Map.put(i_incremented, :grid, new_grid)
+
+      {
+        :ok,
+        Map.put(i_incremented, :grid, new_grid)
+      }
     end
   end
 

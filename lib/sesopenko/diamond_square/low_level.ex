@@ -44,7 +44,7 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
     rem(value, max)
   end
 
-  def average_points(grid, points) when length(points) > 0 do
+  def average_points(grid, points) do
     sum =
       Enum.reduce(points, 0, fn {x, y}, acc ->
         acc + grid[{x, y}]
@@ -63,16 +63,12 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
     section_scalar = get_scalar(n, iteration)
     midpoint_translation = div(section_scalar, 2)
 
-    translation_vectors = [
-      {-midpoint_translation, -midpoint_translation},
-      {midpoint_translation, -midpoint_translation},
-      {-midpoint_translation, midpoint_translation},
-      {midpoint_translation, midpoint_translation}
+    [
+      {-midpoint_translation + target_x, -midpoint_translation + target_y},
+      {midpoint_translation + target_x, -midpoint_translation + target_y},
+      {-midpoint_translation + target_x, midpoint_translation + target_y},
+      {midpoint_translation + target_x, midpoint_translation + target_y}
     ]
-
-    Stream.map(translation_vectors, fn {translation_x, translation_y} ->
-      {translation_x + target_x, translation_y + target_y}
-    end)
   end
 
   def get_feeding_points_for_square(n, iteration, {x, y}) do
