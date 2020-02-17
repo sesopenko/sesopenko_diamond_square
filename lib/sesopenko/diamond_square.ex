@@ -171,30 +171,6 @@ defmodule Sesopenko.DiamondSquare do
     sum / length(points)
   end
 
-  def initialize_grid(n) do
-    grid = %{}
-    size = LowLevel.calc_size(n)
-    end_index = size - 1
-
-    corners = [
-      {0, 0},
-      {0, end_index},
-      {end_index, end_index},
-      {end_index, 0}
-    ]
-
-    set_corners(grid, corners)
-  end
-
-  def set_corners(grid, corners) when length(corners) > 0 do
-    [corner | leftover] = corners
-    set_corners(Map.put(grid, corner, :rand.uniform(254)), leftover)
-  end
-
-  def set_corners(grid, _) do
-    grid
-  end
-
   def gen_noise(n, i, max_scale \\ 128.0) do
     ratio = i / n
     range = round((1.0 - ratio) * max_scale)
