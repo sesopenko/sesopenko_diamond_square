@@ -27,3 +27,4 @@ Accepted
 Describe the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences but all of them affect the team and project in the future.
 
 * Moving all of the low level functionality has made it clear that there's nothing testing the full process.
+* Premature optimization by using Streams resulted in integrated low level functions failing. Discovered opportunities for performance improvements but the complexity is high & should be done strategically.
