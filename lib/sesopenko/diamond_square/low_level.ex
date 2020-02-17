@@ -74,4 +74,33 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
       {translation_x + target_x, translation_y + target_y}
     end)
   end
+
+  @doc """
+  Generates a full list of square points spanning a 2 dimensional axis
+  """
+  def gen_square_points(n, i) when n > 1 and i < n and i >= 0 do
+    num_rows = round(:math.pow(2, i + 1)) + 1
+    end_row = num_rows - 1
+    scalar = div(get_scalar(n, i), 2)
+
+    Enum.flat_map(0..end_row, fn row_i ->
+      min_qty = round(:math.pow(2, i))
+      shift = rem(row_i, 2)
+      x_translate = rem(row_i + 1, 2)
+      qty = min_qty + shift
+
+      Enum.map(0..(qty - 1), fn column_i ->
+        y = row_i * scalar
+        x = (column_i + x_translate) * scalar + column_i * scalar
+        point = {x, y}
+        point
+      end)
+    end)
+  end
+
+  def gen_noise(n, i, max_scale \\ 128.0) do
+    ratio = i / n
+    range = round((1.0 - ratio) * max_scale)
+    :rand.uniform(range) - div(round(range), 2)
+  end
 end

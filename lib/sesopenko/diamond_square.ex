@@ -45,7 +45,7 @@ defmodule Sesopenko.DiamondSquare do
     new_grid =
       Enum.reduce(gen_diamond_points(n, i), grid, fn point, current_grid ->
         feeding_points = LowLevel.get_feeding_points_for_diamond(n, i, point)
-        average = LowLevel.average_points(grid, feeding_points) + gen_noise(n, i)
+        average = LowLevel.average_points(grid, feeding_points) + LowLevel.gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
 
@@ -53,12 +53,12 @@ defmodule Sesopenko.DiamondSquare do
   end
 
   def apply_square(n, i, grid) do
-    square_points = gen_square_points(n, i)
+    square_points = LowLevel.gen_square_points(n, i)
 
     new_grid =
       Enum.reduce(square_points, grid, fn point, current_grid ->
         feeding_points = get_feeding_points_for_square(n, i, point)
-        average = LowLevel.average_points(current_grid, feeding_points) + gen_noise(n, i)
+        average = LowLevel.average_points(current_grid, feeding_points) + LowLevel.gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
 
@@ -115,34 +115,5 @@ defmodule Sesopenko.DiamondSquare do
     midpoint_translation = div(scalar, 2)
 
     Enum.map(0..last_point_in_span, fn i -> i * scalar + midpoint_translation end)
-  end
-
-  @doc """
-  Generates a full list of square points spanning a 2 dimensional axis
-  """
-  def gen_square_points(n, i) when n > 1 and i < n and i >= 0 do
-    num_rows = round(:math.pow(2, i + 1)) + 1
-    end_row = num_rows - 1
-    scalar = div(LowLevel.get_scalar(n, i), 2)
-
-    Enum.flat_map(0..end_row, fn row_i ->
-      min_qty = round(:math.pow(2, i))
-      shift = rem(row_i, 2)
-      x_translate = rem(row_i + 1, 2)
-      qty = min_qty + shift
-
-      Enum.map(0..(qty - 1), fn column_i ->
-        y = row_i * scalar
-        x = (column_i + x_translate) * scalar + column_i * scalar
-        point = {x, y}
-        point
-      end)
-    end)
-  end
-
-  def gen_noise(n, i, max_scale \\ 128.0) do
-    ratio = i / n
-    range = round((1.0 - ratio) * max_scale)
-    :rand.uniform(range) - div(round(range), 2)
   end
 end
