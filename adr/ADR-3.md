@@ -20,7 +20,7 @@ We will move the low level functionality which is not pertinant to creating a Di
 
 ## Status
 
-Proposed
+Accepted
 
 ## Consequences
 
