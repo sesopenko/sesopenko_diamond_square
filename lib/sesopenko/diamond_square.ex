@@ -67,6 +67,27 @@ defmodule Sesopenko.DiamondSquare do
     end
   end
 
+  def step_to_end(%DiamondSquare{} = diamond_square) do
+    step_to_end(diamond_square, :continue)
+  end
+
+  def step_to_end(%DiamondSquare{} = diamond_square, :continue) do
+    {:ok, new_state} = DiamondSquare.perform_step(diamond_square)
+    next_step = new_state.next_step
+    # if done, just return out
+    if next_step == :done do
+      # if done, just return out
+      new_state
+    else
+      # else continue on
+      step_to_end(new_state, :continue)
+    end
+  end
+
+  def step_to_end(%DiamondSquare{} = diamond_square, :done) do
+    diamond_square
+  end
+
   defp get_next_step_after_square_performed(diamond_square) do
     advanced_iteration = diamond_square.i + 1
     n = diamond_square.n

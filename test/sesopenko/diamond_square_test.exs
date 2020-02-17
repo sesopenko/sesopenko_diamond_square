@@ -299,4 +299,69 @@ defmodule Sesopenko.DiamondSquareTest do
       end
     end
   end
+
+  describe "step_to_end" do
+    scenarios = [
+      %{
+        label: "n(2)",
+        n: 2,
+        expected_next_step: :done,
+        expected_i: 2,
+        expected_grid_points: [
+          # top row points
+          {0, 0},
+          {1, 0},
+          {2, 0},
+          {3, 0},
+          {4, 0},
+          # 2nd row
+          {0, 1},
+          {1, 1},
+          {2, 1},
+          {3, 1},
+          {4, 1},
+          # middle row points
+          {0, 2},
+          {1, 2},
+          {2, 2},
+          {3, 2},
+          {4, 2},
+          # 3rd row
+          {0, 3},
+          {1, 3},
+          {2, 3},
+          {3, 3},
+          {4, 3},
+          # bottom row points
+          {0, 4},
+          {1, 4},
+          {2, 4},
+          {3, 4},
+          {4, 4}
+        ]
+      }
+      # n(3),
+      # maybe n(4) if we're not lazy
+    ]
+
+    for scenario <- scenarios do
+      @tag n: scenario[:n]
+      @tag expected_next_step: scenario[:expected_next_step]
+      @tag expected_i: scenario[:expected_i]
+      @tag expected_grid_points: scenario[:expected_grid_points]
+      test scenario[:label], context do
+        # Arrange.
+        starting_grid = DiamondSquare.init(context[:n])
+        # Act.
+        result = DiamondSquare.step_to_end(starting_grid)
+        # Assert.
+        assert result.i == context[:expected_i]
+        assert result.next_step == context[:expected_next_step]
+
+        for expected_point <- context[:expected_grid_points] do
+          assert Map.has_key?(result.grid, expected_point)
+        end
+      end
+    end
+  end
 end
