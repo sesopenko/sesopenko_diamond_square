@@ -56,4 +56,22 @@ defmodule Sesopenko.DiamondSquare.LowLevel do
   def get_scalar(n, iteration) do
     round(:math.pow(2, n - iteration))
   end
+
+  def get_feeding_points_for_diamond(n, iteration, {target_x, target_y}) do
+    # there should be 4 points
+
+    section_scalar = get_scalar(n, iteration)
+    midpoint_translation = div(section_scalar, 2)
+
+    translation_vectors = [
+      {-midpoint_translation, -midpoint_translation},
+      {midpoint_translation, -midpoint_translation},
+      {-midpoint_translation, midpoint_translation},
+      {midpoint_translation, midpoint_translation}
+    ]
+
+    Enum.map(translation_vectors, fn {translation_x, translation_y} ->
+      {translation_x + target_x, translation_y + target_y}
+    end)
+  end
 end

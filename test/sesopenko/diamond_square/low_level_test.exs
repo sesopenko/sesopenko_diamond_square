@@ -161,4 +161,115 @@ defmodule Sesopenko.DiamondSquare.LowLevelTest do
       end
     end
   end
+
+  describe "get_feeding_points_for_diamond" do
+    # diamond points will never have to be wrapped from opposite ends of
+    # the grid & are more straight forward to calculate than squares.
+    scenarios = [
+      # see documentation/diamond-square-2n.svg
+      %{
+        :label => "n = 2, first iteration, diamond midpoint in center",
+        :n => 2,
+        :iteration => 0,
+        :mid_point => {2, 2},
+        :expected_points => [
+          {0, 0},
+          {4, 0},
+          {0, 4},
+          {4, 4}
+        ]
+      },
+      %{
+        :label => "n = 2, 2nd iteration, diamond midpoint in top left",
+        :n => 2,
+        :iteration => 1,
+        :mid_point => {1, 1},
+        :expected_points => [
+          {0, 0},
+          {2, 0},
+          {0, 2},
+          {2, 2}
+        ]
+      },
+      %{
+        :label => "n = 2, 2nd iteration, diamond midpoint in top right",
+        :n => 2,
+        :iteration => 1,
+        :mid_point => {3, 1},
+        :expected_points => [
+          {2, 0},
+          {4, 0},
+          {2, 2},
+          {4, 2}
+        ]
+      },
+      # see apps/diamond_square/documentation/explanation/README.md
+      %{
+        :label => "n = 3, 1st iteration, diamond in the center",
+        :n => 3,
+        :iteration => 0,
+        :mid_point => {4, 4},
+        :expected_points => [
+          {0, 0},
+          {8, 0},
+          {0, 8},
+          {8, 8}
+        ]
+      },
+      %{
+        :label => "n = 3, 2nd iteration, diamond in the lower left",
+        :n => 3,
+        :iteration => 1,
+        :mid_point => {2, 6},
+        :expected_points => [
+          {0, 4},
+          {4, 4},
+          {0, 8},
+          {4, 8}
+        ]
+      },
+      # [. . . . . . . . .]
+      # [. . . . . . . . .]
+      # [. . . . . . . . .]
+      # [. . . . . . . . .]
+      # [. . f . f . . . .] f(2,4), f(4,4)
+      # [. . . m . . . . .] m(3,5)
+      # [. . f . f . . . .] f(2,6), f(4,6)
+      # [. . . . . . . . .]
+      # [. . . . . . . . .]
+      %{
+        :label => "n = 3, final (3rd) iteration, 2nd from left, 3rd from top",
+        :n => 3,
+        :iteration => 2,
+        :mid_point => {3, 5},
+        :expected_points => [
+          {2, 4},
+          {4, 4},
+          {2, 6},
+          {4, 6}
+        ]
+      }
+    ]
+
+    for scenario <- scenarios do
+      @tag n: scenario[:n]
+      @tag iteration: scenario[:iteration]
+      @tag mid_point: scenario[:mid_point]
+      @tag expected_points: scenario[:expected_points]
+      test scenario[:label], context do
+        result =
+          LowLevel.get_feeding_points_for_diamond(
+            context[:n],
+            context[:iteration],
+            context[:mid_point]
+          )
+
+        assert length(result) == 4
+
+        for expected <- context[:expected_points] do
+          assert Enum.member?(result, expected), "Should find expected point"
+        end
+      end
+    end
+  end
 end

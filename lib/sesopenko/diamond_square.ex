@@ -44,7 +44,7 @@ defmodule Sesopenko.DiamondSquare do
   def apply_diamond(n, i, grid) do
     new_grid =
       Enum.reduce(gen_diamond_points(n, i), grid, fn point, current_grid ->
-        feeding_points = get_feeding_points_for_diamond(n, i, point)
+        feeding_points = LowLevel.get_feeding_points_for_diamond(n, i, point)
         average = LowLevel.average_points(grid, feeding_points) + gen_noise(n, i)
         Map.put(current_grid, point, average)
       end)
@@ -90,24 +90,6 @@ defmodule Sesopenko.DiamondSquare do
       {before_x, before_y} = before_wrap
       after_wrap = {LowLevel.wrap_i(before_x, size), LowLevel.wrap_i(before_y, size)}
       after_wrap
-    end)
-  end
-
-  def get_feeding_points_for_diamond(n, iteration, {target_x, target_y}) do
-    # there should be 4 points
-
-    section_scalar = LowLevel.get_scalar(n, iteration)
-    midpoint_translation = div(section_scalar, 2)
-
-    translation_vectors = [
-      {-midpoint_translation, -midpoint_translation},
-      {midpoint_translation, -midpoint_translation},
-      {-midpoint_translation, midpoint_translation},
-      {midpoint_translation, midpoint_translation}
-    ]
-
-    Enum.map(translation_vectors, fn {translation_x, translation_y} ->
-      {translation_x + target_x, translation_y + target_y}
     end)
   end
 
