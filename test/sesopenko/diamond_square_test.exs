@@ -6,7 +6,6 @@ defmodule Sesopenko.DiamondSquareTest do
   """
   use ExUnit.Case
   use ExUnit.Case, async: true
-  doctest DiamondSquare
 
   describe "calc_size" do
     scenarios = [
@@ -741,116 +740,6 @@ defmodule Sesopenko.DiamondSquareTest do
         result = DiamondSquare.gen_square_points(context[:n], context[:i])
         assert length(result) == length(context[:expected])
         assert result == context[:expected]
-      end
-    end
-  end
-
-  describe "handle fetch_grid" do
-    test "should get a grid" do
-      {:ok, pid} = GenServer.start_link(DiamondSquare, 2)
-      state = DiamondSquare.fetch_grid(pid)
-      size = state.size
-      assert 5 == size
-      grid = state.grid
-      top_left_corner = grid[{0, 0}]
-      assert is_integer(top_left_corner)
-      top_right_corner = grid[{4, 0}]
-      assert is_integer(top_right_corner)
-      bottom_left_corner = grid[{0, 4}]
-      assert is_integer(bottom_left_corner)
-      bottom_right_corner = grid[{4, 4}]
-      assert is_integer(bottom_right_corner)
-    end
-  end
-
-  describe "handle step_forward" do
-    scenarios = [
-      %{
-        :n => 2,
-        :num_steps => 1,
-        :expected_size => 5,
-        :expected_next_step => :square,
-        :expected_i => 0,
-        :expected_length => 5,
-        :expected_points => [
-          {0, 0},
-          {4, 0},
-          {2, 2},
-          {0, 4},
-          {4, 4}
-        ]
-      },
-      #   0 1 2 3 4
-      # 0[x . x . x]
-      # 1[. . . . .]
-      # 2[x . x . x]
-      # 3[. . . . .]
-      # 4[x . x . x]
-      %{
-        :n => 2,
-        :num_steps => 2,
-        :expected_size => 5,
-        :expected_next_step => :diamond,
-        :expected_i => 1,
-        :expected_length => 9,
-        :expected_points => [
-          {0, 0},
-          {2, 0},
-          {4, 0},
-          {0, 2},
-          {2, 2},
-          {4, 2},
-          {0, 4},
-          {2, 4},
-          {4, 4}
-        ]
-      },
-      %{
-        :n => 2,
-        :num_steps => 3,
-        :expected_size => 5,
-        :expected_next_step => :square,
-        :expected_i => 1,
-        :expected_length => 13,
-        :expected_points => [
-          {0, 0},
-          {4, 0},
-          {0, 4},
-          {4, 4}
-        ]
-      }
-    ]
-
-    for scenario <- scenarios do
-      label = "n: #{scenario[:n]} num_steps:#{scenario[:num_steps]}"
-
-      @tag num_steps: scenario[:num_steps]
-      @tag n: scenario[:n]
-      @tag expected_size: scenario[:expected_size]
-      @tag expected_next_step: scenario[:expected_next_step]
-      @tag expected_length: scenario[:expected_length]
-      @tag expected_i: scenario[:expected_i]
-      @tag label: label
-      @tag expected_points: scenario[:expected_points]
-      test label, context do
-        n = context[:n]
-        num_steps = context[:num_steps]
-        {:ok, pid} = GenServer.start_link(DiamondSquare, n)
-
-        result =
-          Enum.reduce(1..num_steps, nil, fn _, _ ->
-            DiamondSquare.step_forward(pid)
-          end)
-
-        assert result.size == context[:expected_size]
-        assert result.i == context[:expected_i]
-        assert result.next_step == context[:expected_next_step]
-
-        for expected_point <- context[:expected_points] do
-          assert Map.has_key?(result.grid, expected_point)
-        end
-
-        assert length(Map.keys(result.grid)) == context[:expected_length]
       end
     end
   end

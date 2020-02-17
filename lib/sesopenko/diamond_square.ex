@@ -1,49 +1,9 @@
 defmodule Sesopenko.DiamondSquare do
-  alias Sesopenko.DiamondSquare
-  use GenServer
   defstruct grid: %{}, n: nil, i: nil, next_step: nil, size: 0
 
   @moduledoc """
   Documentation for DiamondSquare.
   """
-
-  def init(n_size) do
-    diamond_square = %DiamondSquare{
-      grid: initialize_grid(n_size),
-      n: n_size,
-      i: 0,
-      next_step: :diamond,
-      size: calc_size(n_size)
-    }
-
-    {:ok, diamond_square}
-  end
-
-  def fetch_grid(pid) do
-    GenServer.call(pid, :get_grid)
-  end
-
-  def step_forward(pid) when is_pid(pid) do
-    GenServer.call(pid, :step_forward)
-  end
-
-  def step_to_end(pid) when is_pid(pid) do
-    GenServer.call(pid, :step_to_end)
-  end
-
-  def handle_call(:get_grid, _from, diamond_square) do
-    {:reply, diamond_square, diamond_square}
-  end
-
-  def handle_call(:step_forward, _from, diamond_square) do
-    update = perform_step(diamond_square)
-    {:reply, update, update}
-  end
-
-  def handle_call(:step_to_end, _from, diamond_square) do
-    result = step_to_end(diamond_square)
-    {:reply, result, result}
-  end
 
   def step_to_end(diamond_square) do
     n = diamond_square.n
